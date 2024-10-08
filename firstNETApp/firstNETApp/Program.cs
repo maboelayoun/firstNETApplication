@@ -12,6 +12,7 @@ app.MapPost("/employees/add-employee", async(HttpContext httpcontext)=>{
         string body =await stream.ReadToEndAsync();
         var response = JsonSerializer.Deserialize<Employee>(body);
         await httpcontext.Response.WriteAsync($"{response?.name} {response?.age} {response?.gender}");
+        await httpcontext.Response.WriteAsync("Welcome to Test");
     } 
 });
 
