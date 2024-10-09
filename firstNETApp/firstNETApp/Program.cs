@@ -4,17 +4,21 @@ var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
 //app.MapGet("/", () => "Welcome in First NET Application");
-app.MapPost("/employees/add-employee", async(HttpContext httpcontext)=>{
-    //var key = httpcontext.Request.Headers["myKey"];
-    //await httpcontext.Response.WriteAsync($"Welcome Mahmoud Elwakel  {key}");
-    using (StreamReader stream = new StreamReader(httpcontext.Request.Body))
-    {
-        string body =await stream.ReadToEndAsync();
-        var response = JsonSerializer.Deserialize<Employee>(body);
-        await httpcontext.Response.WriteAsync($"{response?.name} {response?.age} {response?.gender}");
-        await httpcontext.Response.WriteAsync("Welcome to Test");
-    } 
+app.MapGet("/", async (HttpContext httpContext) =>
+{
+    httpContext.Response.WriteAsync("Default");
 });
+//app.MapPost("/employees/add-employee", async(HttpContext httpcontext)=>{
+//    //var key = httpcontext.Request.Headers["myKey"];
+//    //await httpcontext.Response.WriteAsync($"Welcome Mahmoud Elwakel  {key}");
+//    using (StreamReader stream = new StreamReader(httpcontext.Request.Body))
+//    {
+//        string body =await stream.ReadToEndAsync();
+//        var response = JsonSerializer.Deserialize<Employee>(body);
+//        await httpcontext.Response.WriteAsync($"{response?.name} {response?.age} {response?.gender}");
+        
+//    } 
+//});
 
 app.Run();
 class Employee
