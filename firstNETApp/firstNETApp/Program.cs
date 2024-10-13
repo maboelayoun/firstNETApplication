@@ -4,9 +4,25 @@ var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
 //app.MapGet("/", () => "Welcome in First NET Application");
-app.MapGet("/", async (HttpContext httpContext) =>
+//run short circuit not send to other middleware
+//if i want to Use be short circuit should identify httpContext and RequestDelehate
+app.Use(async ( httpContext,next) =>
 {
-    httpContext.Response.WriteAsync("Default");
+   await httpContext.Response.WriteAsync("Hello ");
+   await next(httpContext);
+    await httpContext.Response.WriteAsync("After mid 1 ");
+});
+
+app.Use( async ( httpContext,next) =>
+{
+    await httpContext.Response.WriteAsync("Hello2 ");
+   await  next(httpContext);
+    await httpContext.Response.WriteAsync("after mid 2 ");
+});
+app.Run(async (httpContext) =>
+{
+    await httpContext.Response.WriteAsync("Hello3 ");
+    await httpContext.Response.WriteAsync("after mid 3 ");
 });
 //app.MapPost("/employees/add-employee", async(HttpContext httpcontext)=>{
 //    //var key = httpcontext.Request.Headers["myKey"];
@@ -16,7 +32,7 @@ app.MapGet("/", async (HttpContext httpContext) =>
 //        string body =await stream.ReadToEndAsync();
 //        var response = JsonSerializer.Deserialize<Employee>(body);
 //        await httpcontext.Response.WriteAsync($"{response?.name} {response?.age} {response?.gender}");
-        
+
 //    } 
 //});
 
